@@ -17,15 +17,13 @@ import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonIcon, IonPage, IonRouter
 import { boatOutline, busOutline, calendarOutline, personCircleOutline, receiptOutline } from 'ionicons/icons';
 import { computed } from 'vue';
 
-import { OFFICE_ROLES, session } from '@/stores/session';
+import { CREW_ROLES, OFFICE_ROLES, session } from '@/stores/session';
 
 const tabs = computed(() => {
   const list: { tab: string; href: string; label: string; icon: string }[] = [];
-  if (session.hasRole('capitan')) {
-    list.push({ tab: 'salidas', href: '/tabs/salidas', label: 'Mis salidas', icon: boatOutline });
-  }
-  if (session.hasRole('chofer')) {
-    list.push({ tab: 'recogidas', href: '/tabs/recogidas', label: 'Recogidas', icon: busOutline });
+  if (session.hasRole(...CREW_ROLES)) {
+    const icon = session.hasRole('capitan') ? boatOutline : busOutline;
+    list.push({ tab: 'salidas', href: '/tabs/salidas', label: 'Mis salidas', icon });
   }
   list.push({ tab: 'disponibilidad', href: '/tabs/disponibilidad', label: 'Disponibilidad', icon: calendarOutline });
   if (session.hasRole(...OFFICE_ROLES)) {

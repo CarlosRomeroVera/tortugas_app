@@ -18,7 +18,7 @@ Usuarios de prueba (contraseña `password`): `ventas@`, `coordinacion@`, `admin@
 |---|---|---|
 | Todos | Login, Disponibilidad, Perfil / cerrar sesión | API real |
 | admin, coordinación, ventas | Nueva reserva, detalle, pagos, cancelación | API real |
-| Capitán | Mis salidas, etapas del tour, pase de lista, incidentes, horómetro | **Datos de prueba** (`src/demo/crewDemo.ts`) |
-| Chofer | Mis recogidas | **Datos de prueba** |
+| Capitán | Mis salidas, etapas, pase de lista, fallas, horómetro | API real (`/me/departures`, `/sync/events`) |
+| Chofer | Mis salidas, etapas, quién subió, fallas, odómetro | API real (mismos endpoints) |
 
-Las pantallas de capitán y chofer esperan los endpoints de la sección 7 de `docs/API.md`. Con `VITE_CREW_DEMO=false` muestran un aviso en lugar de los datos de prueba. Sus eventos se guardan en `src/lib/eventQueue.ts` con `client_uuid` y `occurred_at`, listos para `POST /sync/events`.
+Capitán y chofer trabajan sin señal: todo se guarda en la cola de `src/lib/eventQueue.ts` y se envía en lotes a `POST /sync/events` al recuperar conexión, al volver a primer plano y cada minuto. Las salidas y el manifiesto se guardan en el teléfono (`src/stores/crew.ts`). Ver `docs/API.md`, sección 7. Las corridas de traslado del chofer todavía no existen en el backend (sección 8).

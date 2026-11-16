@@ -19,7 +19,9 @@
             fill="outline"
             interface="action-sheet"
           >
-            <ion-select-option v-for="s in SERVICES" :key="s.slug" :value="s.slug">{{ s.name }}</ion-select-option>
+            <ion-select-option v-for="s in catalog.services" :key="s.slug" :value="s.slug">{{
+              s.name
+            }}</ion-select-option>
           </ion-select>
           <ion-input v-model="date" type="date" label="Fecha" label-placement="stacked" fill="outline" :min="today" />
           <PaxStepper v-model="adults" label="Adultos" :min="1" />
@@ -96,14 +98,17 @@ import { availabilityApi } from '@/api/endpoints';
 import { errorMessage } from '@/api/http';
 import { isSharedSlot, type AvailabilityResponse, type PrivateSlot, type SharedSlot } from '@/api/types';
 import PaxStepper from '@/components/PaxStepper.vue';
-import { SERVICES } from '@/config/services';
+import { catalog, refreshCatalog } from '@/config/services';
 import { longDate, money, todayLocal } from '@/lib/format';
 import { startDraft } from '@/stores/bookingDraft';
 import { OFFICE_ROLES, session } from '@/stores/session';
 
 const router = useRouter();
 const today = todayLocal();
-const serviceSlug = ref(SERVICES[0].slug);
+const serviceSlug = ref(catalog.services[0].slug);
+void refreshCatalog().then(() => {
+  if (!catalog.services.some((s) => s.slug === serviceSlug.value)) serviceSlug.value = catalog.services[0].slug;
+});
 const date = ref(today);
 const adults = ref(2);
 const children = ref(0);

@@ -1,6 +1,7 @@
 import { reactive } from 'vue';
 
 import type { Booking } from '@/api/types';
+import { getJSON, setJSON } from '@/lib/storage';
 
 /**
  * Reservas abiertas recientemente en este teléfono, para volver a ellas rápido.
@@ -17,17 +18,16 @@ export interface RecentBooking {
 const KEY = 'tortugas.recentBookings';
 const MAX = 15;
 
-function load(): RecentBooking[] {
-  try {
-    return JSON.parse(localStorage.getItem(KEY) ?? '[]');
-  } catch {
-    return [];
-  }
-}
+export const recentBookings = reactive({ items: [] as RecentBooking[] });
 
-export const recentBookings = reactive({ items: load() });
+/** Se lee de Preferences al importar el módulo; las escrituras esperan a que termine para no pisar la lista. */
+const hydrated = getJSON<RecentBooking[]>(KEY).then((saved) => {
+  if (!Array.isArray(saved)) return;
+  const seen = new Set(recentBookings.items.map((x) => x.code));
+  recentBookings.items = [...recentBookings.items, ...saved.filter((x) => !seen.has(x.code))].slice(0, MAX);
+});
 
-export function rememberBooking(b: Booking): void {
+export async function rememberBooking(b: Booking): Promise<void> {
   const entry: RecentBooking = {
     code: b.code,
     customer: b.customer.name,
@@ -35,10 +35,7 @@ export function rememberBooking(b: Booking): void {
     local_time: b.departure.local_time,
     status: b.status,
   };
+  await hydrated;
   recentBookings.items = [entry, ...recentBookings.items.filter((x) => x.code !== b.code)].slice(0, MAX);
-  try {
-    localStorage.setItem(KEY, JSON.stringify(recentBookings.items));
-  } catch {
-    // Sin almacenamiento: el atajo solo vive en memoria.
-  }
+  await setJSON(KEY, recentBookings.items);
 }

@@ -227,7 +227,7 @@ async function load() {
   loadError.value = '';
   try {
     booking.value = await bookingsApi.get(code.value);
-    rememberBooking(booking.value);
+    void rememberBooking(booking.value);
   } catch (e) {
     loadError.value =
       e instanceof ApiError && e.status === 404 ? `No existe la reserva ${code.value}.` : errorMessage(e);
@@ -290,7 +290,7 @@ async function savePayment() {
       usd_rate: pay.currency === 'USD' ? rate : undefined,
       provider_reference: pay.reference.trim() || null,
     });
-    rememberBooking(booking.value);
+    void rememberBooking(booking.value);
     paymentOpen.value = false;
     toast('Pago registrado');
   } catch (e) {
@@ -327,7 +327,7 @@ async function doCancel(reason?: string) {
   cancelling.value = true;
   try {
     booking.value = await bookingsApi.cancel(booking.value.code, reason?.trim());
-    rememberBooking(booking.value);
+    void rememberBooking(booking.value);
     toast('Reserva cancelada', 'medium');
   } catch (e) {
     toast(errorMessage(e), 'danger');

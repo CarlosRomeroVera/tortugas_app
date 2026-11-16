@@ -265,7 +265,7 @@ async function submit() {
   try {
     // Misma clave en cada reintento: si la primera llegó, la API devuelve esa reserva y no crea otra.
     const booking = await bookingsApi.create(payload, draft.idempotencyKey);
-    rememberBooking(booking);
+    void rememberBooking(booking);
     clearDraft();
     router.replace(`/tabs/reservas/${booking.code}`);
   } catch (e) {

@@ -26,11 +26,40 @@
             <ion-label>Hora de operación</ion-label>
             <ion-note slot="end">America/Cancun · {{ now }}</ion-note>
           </ion-item>
-          <ion-item v-if="hasFieldRole">
-            <ion-label>Eventos sin enviar</ion-label>
-            <ion-note slot="end" class="tg-num">{{ eventQueue.pending.length }}</ion-note>
-          </ion-item>
+          <template v-if="hasFieldRole">
+            <ion-item v-if="staff">
+              <ion-label>Ficha de personal</ion-label>
+              <ion-note slot="end">{{ STAFF_ROLE_LABEL[staff.role] }}</ion-note>
+            </ion-item>
+            <ion-item v-else>
+              <ion-label class="ion-text-wrap tg-muted">
+                Tu usuario no está ligado a una ficha de personal. Pide a coordinación que lo vincule.
+              </ion-label>
+            </ion-item>
+            <ion-item v-if="staff?.license_expires_on">
+              <ion-label>Licencia vence</ion-label>
+              <ion-note slot="end" class="tg-num">{{ staff.license_expires_on }}</ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-label>Registros sin enviar</ion-label>
+              <ion-note slot="end" class="tg-num">{{ pendingCount }}</ion-note>
+            </ion-item>
+            <ion-item v-if="eventQueue.lastSyncAt">
+              <ion-label>Último envío</ion-label>
+              <ion-note slot="end" class="tg-num">{{ localTime(eventQueue.lastSyncAt) }}</ion-note>
+            </ion-item>
+          </template>
         </ion-list>
+
+        <ion-button
+          v-if="hasFieldRole && pendingCount"
+          expand="block"
+          fill="outline"
+          :disabled="eventQueue.syncing"
+          @click="flush()"
+        >
+          {{ eventQueue.syncing ? 'Enviando…' : 'Enviar ahora' }}
+        </ion-button>
 
         <ion-button expand="block" color="danger" fill="outline" class="tg-big-btn" @click="confirmLogout">
           Cerrar sesión
@@ -59,9 +88,10 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { env } from '@/config/env';
-import { eventQueue } from '@/lib/eventQueue';
+import { eventQueue, flush, pendingFor } from '@/lib/eventQueue';
 import { localTime } from '@/lib/format';
-import { ROLE_LABEL } from '@/lib/labels';
+import { ROLE_LABEL, STAFF_ROLE_LABEL } from '@/lib/labels';
+import { clearCrewCache } from '@/stores/crew';
 import { session } from '@/stores/session';
 
 const router = useRouter();
@@ -74,16 +104,22 @@ const initials = computed(() =>
     .join('')
     .toUpperCase(),
 );
+const staff = computed(() => session.state.staff);
 const hasFieldRole = computed(() => session.hasRole('capitan', 'chofer'));
+const pendingCount = computed(() => {
+  void eventQueue.pending.length;
+  return pendingFor().length;
+});
 const now = localTime(new Date());
 
 async function confirmLogout() {
-  const pending = eventQueue.pending.length;
+  if (hasFieldRole.value && pendingCount.value) await flush();
+  const pending = pendingCount.value;
   const alert = await alertController.create({
     header: 'Cerrar sesión',
     message:
       hasFieldRole.value && pending
-        ? `Hay ${pending} eventos guardados en este teléfono que aún no se envían. Se conservarán.`
+        ? `Hay ${pending} registros que no se pudieron enviar. Se conservan en este teléfono y se enviarán cuando vuelvas a entrar con tu usuario.`
         : '¿Seguro que quieres salir?',
     buttons: [
       { text: 'Cancelar', role: 'cancel' },
@@ -92,6 +128,7 @@ async function confirmLogout() {
         role: 'destructive',
         handler: async () => {
           await session.logout();
+          await clearCrewCache();
           router.replace('/login');
         },
       },

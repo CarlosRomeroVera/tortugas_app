@@ -1,4 +1,12 @@
-import type { BookingStatus, Channel, PaymentMethod, PaymentStatus, Role } from '@/api/types';
+import type {
+  BookingStatus,
+  Channel,
+  DepartureStatus,
+  PaymentMethod,
+  PaymentStatus,
+  Role,
+  StaffRole,
+} from '@/api/types';
 
 export const ROLE_LABEL: Record<Role, string> = {
   admin: 'Administración',
@@ -40,3 +48,23 @@ export const PAYMENT_STATUS: Record<PaymentStatus, string> = {
   failed: 'Fallido',
   refunded: 'Reembolsado',
 };
+
+export const STAFF_ROLE_LABEL: Record<StaffRole, string> = {
+  captain: 'Capitán',
+  driver: 'Chofer',
+  guide: 'Guía',
+  mechanic: 'Mecánico',
+};
+
+export const DEPARTURE_STATUS: Record<DepartureStatus, { label: string; color: string }> = {
+  scheduled: { label: 'Por iniciar', color: 'medium' },
+  in_progress: { label: 'En curso', color: 'tertiary' },
+  completed: { label: 'Finalizada', color: 'success' },
+  cancelled: { label: 'Cancelada', color: 'danger' },
+};
+
+/** Lectura de la unidad: horómetro (embarcación) u odómetro (vehículo). */
+export const READING = {
+  hours: { name: 'horómetro', unit: 'h', placeholder: 'Horas de motor' },
+  km: { name: 'odómetro', unit: 'km', placeholder: 'Kilómetros' },
+} as const;

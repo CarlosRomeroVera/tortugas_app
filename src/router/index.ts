@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from '@ionic/vue-router';
 import type { RouteRecordRaw } from 'vue-router';
 
 import type { Role } from '@/api/types';
-import { OFFICE_ROLES, session } from '@/stores/session';
+import { CREW_ROLES, OFFICE_ROLES, session } from '@/stores/session';
 import TabsPage from '@/views/TabsPage.vue';
 
 declare module 'vue-router' {
@@ -15,8 +15,7 @@ declare module 'vue-router' {
 /** Pestaña de inicio según el rol del usuario. */
 export function homeFor(roles: Role[]): string {
   if (roles.some((r) => OFFICE_ROLES.includes(r))) return '/tabs/disponibilidad';
-  if (roles.includes('capitan')) return '/tabs/salidas';
-  if (roles.includes('chofer')) return '/tabs/recogidas';
+  if (roles.includes('capitan') || roles.includes('chofer')) return '/tabs/salidas';
   return '/tabs/disponibilidad';
 }
 
@@ -47,17 +46,15 @@ const routes: RouteRecordRaw[] = [
         meta: { roles: OFFICE_ROLES },
       },
 
-      // Capitán (datos de prueba hasta que existan los endpoints).
-      { path: 'salidas', component: () => import('@/views/crew/MyDeparturesPage.vue'), meta: { roles: ['capitan'] } },
-      { path: 'salidas/:id', component: () => import('@/views/crew/DeparturePage.vue'), meta: { roles: ['capitan'] } },
+      // Capitán y chofer: mismos endpoints (/me/departures y /sync/events).
+      { path: 'salidas', component: () => import('@/views/crew/MyDeparturesPage.vue'), meta: { roles: CREW_ROLES } },
+      { path: 'salidas/:id', component: () => import('@/views/crew/DeparturePage.vue'), meta: { roles: CREW_ROLES } },
       {
         path: 'salidas/:id/manifiesto',
         component: () => import('@/views/crew/ManifestPage.vue'),
-        meta: { roles: ['capitan'] },
+        meta: { roles: CREW_ROLES },
       },
-
-      // Chofer (datos de prueba).
-      { path: 'recogidas', component: () => import('@/views/driver/MyRunsPage.vue'), meta: { roles: ['chofer'] } },
+      { path: 'recogidas', redirect: '/tabs/salidas' },
 
       { path: 'perfil', component: () => import('@/views/ProfilePage.vue') },
     ],
