@@ -1,2 +1,198 @@
-/* For information on how to create your own theme, please refer to:
-http://ionicframework.com/docs/theming/ */
+/*
+ * Tema Tortugas Ops. Colores tomados del canvas «Tortugas Operaciones»:
+ * azul marino #0B2E4A, turquesa #0E7FA0, coral #D6006F, fondo #F2F6F9.
+ * https://ionicframework.com/docs/theming/
+ */
+:root {
+  --ion-font-family: 'Rubik', system-ui, -apple-system, sans-serif;
+
+  --ion-background-color: #f2f6f9;
+  --ion-background-color-rgb: 242, 246, 249;
+  --ion-text-color: #0b2e4a;
+  --ion-text-color-rgb: 11, 46, 74;
+  --ion-toolbar-background: #0b2e4a;
+  --ion-toolbar-color: #ffffff;
+  --ion-item-background: #ffffff;
+  --ion-card-background: #ffffff;
+  --ion-tab-bar-background: #ffffff;
+  --ion-tab-bar-color: #4f6578;
+  --ion-tab-bar-color-selected: #0e7fa0;
+
+  --ion-color-primary: #0e7fa0;
+  --ion-color-primary-rgb: 14, 127, 160;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #0c708d;
+  --ion-color-primary-tint: #268caa;
+
+  --ion-color-secondary: #0b2e4a;
+  --ion-color-secondary-rgb: 11, 46, 74;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #0a2841;
+  --ion-color-secondary-tint: #23435c;
+
+  /* Coral: la acción principal de campo («Marcar etapa», «Nueva reserva»). */
+  --ion-color-tertiary: #d6006f;
+  --ion-color-tertiary-rgb: 214, 0, 111;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #bc0062;
+  --ion-color-tertiary-tint: #da1a7d;
+
+  --ion-color-success: #13803f;
+  --ion-color-success-rgb: 19, 128, 63;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #117137;
+  --ion-color-success-tint: #2b8d52;
+
+  --ion-color-warning: #b45309;
+  --ion-color-warning-rgb: 180, 83, 9;
+  --ion-color-warning-contrast: #ffffff;
+  --ion-color-warning-contrast-rgb: 255, 255, 255;
+  --ion-color-warning-shade: #9e4908;
+  --ion-color-warning-tint: #bc6422;
+
+  --tg-navy: #0b2e4a;
+  --tg-muted: #4f6578;
+  --tg-line: #dde6ed;
+  --tg-surface: #ffffff;
+  --tg-sea-bg: #d6f0f7;
+  --tg-coral-bg: #fde4ee;
+  --tg-ok-bg: #d9f3ea;
+  --tg-ok-fg: #0b5e3f;
+  --tg-warn-bg: #fef3c7;
+  --tg-warn-fg: #7a3d06;
+  --tg-bad-bg: #fee2e2;
+  --tg-bad-fg: #991b1b;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* :root.ios / :root.md para ganarle a la paleta oscura de Ionic. */
+  :root,
+  :root.ios,
+  :root.md {
+    --ion-background-color: #0a1822;
+    --ion-background-color-rgb: 10, 24, 34;
+    --ion-text-color: #e3eef2;
+    --ion-text-color-rgb: 227, 238, 242;
+    --ion-toolbar-background: #071d2d;
+    --ion-item-background: #10222f;
+    --ion-card-background: #10222f;
+    --ion-tab-bar-background: #10222f;
+    --ion-tab-bar-color: #93aab6;
+    --ion-tab-bar-color-selected: #4cc3e6;
+
+    --ion-color-primary: #4cc3e6;
+    --ion-color-primary-rgb: 76, 195, 230;
+    --ion-color-primary-contrast: #06131c;
+    --ion-color-primary-contrast-rgb: 6, 19, 28;
+    --ion-color-primary-shade: #43acca;
+    --ion-color-primary-tint: #5ec9e9;
+
+    --ion-color-secondary: #8ddcf2;
+    --ion-color-secondary-rgb: 141, 220, 242;
+    --ion-color-secondary-contrast: #06131c;
+    --ion-color-secondary-contrast-rgb: 6, 19, 28;
+    --ion-color-secondary-shade: #7cc2d5;
+    --ion-color-secondary-tint: #98e0f3;
+
+    --ion-color-tertiary: #f2709f;
+    --ion-color-tertiary-rgb: 242, 112, 159;
+    --ion-color-tertiary-contrast: #1a0410;
+    --ion-color-tertiary-contrast-rgb: 26, 4, 16;
+    --ion-color-tertiary-shade: #d5638c;
+    --ion-color-tertiary-tint: #f37ea9;
+
+    --ion-color-success: #4ade80;
+    --ion-color-success-rgb: 74, 222, 128;
+    --ion-color-success-contrast: #06131c;
+    --ion-color-success-contrast-rgb: 6, 19, 28;
+    --ion-color-success-shade: #41c371;
+    --ion-color-success-tint: #5ce18d;
+
+    --ion-color-warning: #fbbf24;
+    --ion-color-warning-rgb: 251, 191, 36;
+    --ion-color-warning-contrast: #06131c;
+    --ion-color-warning-contrast-rgb: 6, 19, 28;
+    --ion-color-warning-shade: #dda820;
+    --ion-color-warning-tint: #fbc53a;
+
+    --tg-navy: #071d2d;
+    --tg-muted: #93aab6;
+    --tg-line: #23404f;
+    --tg-surface: #10222f;
+    --tg-sea-bg: #0f3445;
+    --tg-coral-bg: #3a1526;
+    --tg-ok-bg: #12351f;
+    --tg-ok-fg: #86efac;
+    --tg-warn-bg: #3a2a0b;
+    --tg-warn-fg: #fcd34d;
+    --tg-bad-bg: #3d1515;
+    --tg-bad-fg: #fca5a5;
+  }
+}
+
+/* ---- Piezas compartidas ---- */
+.tg-card {
+  background: var(--tg-surface);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(11, 46, 74, 0.08);
+}
+.tg-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--tg-muted);
+}
+.tg-muted {
+  color: var(--tg-muted);
+}
+.tg-num {
+  font-variant-numeric: tabular-nums;
+}
+.tg-hero {
+  background: var(--ion-toolbar-background);
+  color: #ffffff;
+  padding: 4px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tg-hero .tg-eyebrow {
+  color: #8fe0f3;
+}
+.tg-hero h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+}
+.tg-hero p {
+  margin: 0;
+  color: #cde7f1;
+  font-size: 14px;
+}
+.tg-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+}
+.tg-big-btn {
+  --border-radius: 14px;
+  min-height: 60px;
+  font-size: 17px;
+  font-weight: 700;
+  text-transform: none;
+  margin: 0;
+}
+ion-button {
+  text-transform: none;
+  font-weight: 600;
+}
+ion-toolbar ion-title {
+  font-weight: 700;
+}
